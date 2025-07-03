@@ -10,10 +10,10 @@ from bosesoundtouchapi.bstconst import (
 NAME = 'bosesoundtouchapi'
 DESCRIPTION = 'BOSE SoundTouch API Python3 Library'
 
-# if installing using less than Python v3, then stop the install!
+# if installing using less than Python v3.x, then stop the install!
 import sys
-if sys.version_info < (3,4):
-    sys.exit('Sorry, Python < 3.4 is not supported.')
+if sys.version_info < (3,9):
+    sys.exit('Sorry, Python < 3.9 is not supported.')
 
 # function to read the contents of the README.md file, and return it to the caller.
 def readme(pathName:str):
@@ -61,7 +61,7 @@ setup(
         'requests>=2.31.0',
         'smartinspectpython>=3.0.37',
         'tinytag==1.10.0',
-        'urllib3>=1.21.1,<1.27',
+        'urllib3>=2.0',
         'websocket-client==1.6.4',
         'zeroconf>=0.132.2'
     ],
@@ -72,8 +72,6 @@ setup(
     # set classifiers to associate this package with on Pypi.org.
     classifiers=[
         'Development Status :: 5 - Production/Stable',
-#       'Development Status :: 2 - Pre-Alpha',
-#       'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
         'Programming Language :: Python :: 3',
         'Operating System :: Microsoft :: Windows',

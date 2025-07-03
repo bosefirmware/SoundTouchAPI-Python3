@@ -3,7 +3,7 @@ The `firmware` namespace contains classes related to the Bose SoundTouch
 Firmware update process.
 """
 # external package imports.
-import urllib3.request
+import urllib3 
 import xml.etree.ElementTree as xmltree
 
 # our package imports.

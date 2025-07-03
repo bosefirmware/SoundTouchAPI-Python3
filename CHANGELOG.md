@@ -6,6 +6,15 @@ Change are listed in reverse chronological order (newest to oldest).
 
 <span class="changelog">
 
+###### [ 1.0.81 ] - 2025/07/02
+
+  * Updated requirements: from `urllib3>=1.21.1,<1.27` to `urllib3>=2.0`.  Due to Home Assistant Core 2025.7.0 update requirements.
+  * Updated `SoundTouchFirmware` class reference to the urllib3 library.
+
+###### [ 1.0.80 ] - 2025/07/02
+
+  * Updated requirements: from `urllib3>=1.21.1,<1.27` to `urllib3>=2.0`.  Due to Home Assistant Core 2025.7.0 update requirements.
+
 ###### [ 1.0.79 ] - 2025/06/06
 
   * Updated method `SoundTouchClient.PlayNotificationTTS` to check if the currently playing source is a notification; if so, then a "MediaNextTrack" is issued to avoid the `request not supported while speaker resource is in use` exception.
