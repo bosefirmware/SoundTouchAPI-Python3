@@ -6,6 +6,10 @@ Change are listed in reverse chronological order (newest to oldest).
 
 <span class="changelog">
 
+###### [ 1.0.82 ] - 2025/07/27
+
+  * Updated package requirement from `smartinspectpython>=3.0.37` to `smartinspectpython>=3.0.38`.
+
 ###### [ 1.0.81 ] - 2025/07/02
 
   * Updated requirements: from `urllib3>=1.21.1,<1.27` to `urllib3>=2.0`.  Due to Home Assistant Core 2025.7.0 update requirements.

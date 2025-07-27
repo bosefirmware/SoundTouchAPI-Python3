@@ -32,6 +32,7 @@ def getDirFilesList(pathName:str) -> list[str]:
 
 # package setup.
 setup(
+
     # basic package information.
     name=NAME,
     version=VERSION,
@@ -59,7 +60,7 @@ setup(
     install_requires=[
         'platformdirs>=4.1.0',
         'requests>=2.31.0',
-        'smartinspectpython>=3.0.37',
+        'smartinspectpython>=3.0.38',
         'tinytag==1.10.0',
         'urllib3>=2.0',
         'websocket-client==1.6.4',

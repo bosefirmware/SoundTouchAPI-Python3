@@ -2,7 +2,7 @@
 # setuptools>=58.1.0
 
 platformdirs==4.1.0
-smartinspectpython>=3.0.37
+smartinspectpython>=3.0.38
 tinytag==1.10.0
 urllib3>=2.0
 websocket-client==1.6.4
