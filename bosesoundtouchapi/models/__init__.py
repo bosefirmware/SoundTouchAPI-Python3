@@ -20,6 +20,7 @@ from .grouprole import GroupRole, GroupRoleTypes
 from .info import Information, InformationNetworkInfo
 from .introspect import Introspect
 from .keystates import KeyStates
+from .languagecodes import LanguageCodes
 from .mediaserverlist import MediaServerList, MediaServer
 from .musicserviceaccount import MusicServiceAccount
 from .navigate import Navigate, NavigateMenuTypes, NavigateSortTypes
@@ -46,6 +47,8 @@ from .searchsorttypes import SearchSortTypes
 from .searchstation import SearchStation
 from .searchstationresults import SearchStationResults, SearchStationSongs, SearchStationArtists
 from .serviceAvailability import ServiceAvailability, Service
+from .setuprequest import SetupRequest
+from .setuprequeststates import SetupRequestStates
 from .shufflesettingtypes import ShuffleSettingTypes
 from .simpleconfig import SimpleConfig
 from .softwareupdatecheckresponse import SoftwareUpdateCheckResponse
@@ -60,6 +63,8 @@ from .userrating import UserRating, UserRatingTypes
 from .usertrackcontrol import UserTrackControl, UserTrackControlTypes
 from .volume import Volume
 from .wirelessprofile import WirelessProfile
+from .wirelessprofileactive import WirelessProfileActive
+from .wirelesssecuritytypes import WirelessSecurityTypes
 from .zone import Zone, ZoneMember
 
 # all classes to import when "import *" is specified.
@@ -85,6 +90,7 @@ __all__ = [
     'Information', 'InformationNetworkInfo',
     'Introspect',
     'KeyStates',
+    'LanguageCodes',
     'MediaServerList', 'MediaServer',
     'MusicServiceAccount',
     'Navigate', 'NavigateMenuTypes', 'NavigateSortTypes',
@@ -111,6 +117,7 @@ __all__ = [
     'SearchStation',
     'SearchStationResults', 'SearchStationSongs', 'SearchStationArtists',
     'ServiceAvailability', 'Service',
+    'SetupRequest', 'SetupRequestStates',
     'ShuffleSettingTypes',
     'SimpleConfig',
     'SoftwareUpdateCheckResponse',
@@ -125,5 +132,7 @@ __all__ = [
     'UserTrackControl', 'UserTrackControlTypes',
     'Volume',
     'WirelessProfile',
+    'WirelessProfileActive',
+    'WirelessSecurityTypes',
     'Zone', 'ZoneMember'
 ]

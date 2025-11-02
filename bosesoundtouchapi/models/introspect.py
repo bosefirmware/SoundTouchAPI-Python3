@@ -2,8 +2,7 @@
 from xml.etree.ElementTree import Element
 
 # our package imports.
-from ..bstutils import export, _xmlFindInt
-from ..soundtoucherror import SoundTouchError
+from ..bstutils import export
 from ..soundtouchmodelrequest import SoundTouchModelRequest
 from ..soundtouchsources import SoundTouchSources
 

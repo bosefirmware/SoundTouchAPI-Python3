@@ -29,6 +29,7 @@ from .bstconst import (
     MSG_TRACE_DELAY_DEVICE,
     MSG_TRACE_DEVICE_COMMAND,
     MSG_TRACE_DEVICE_COMMAND_WITH_PARM,
+    MSG_TRACE_DEVICE_RESPONSE,
     MSG_TRACE_FAVORITE_NOT_ENABLED,
     MSG_TRACE_GET_CONFIG_OBJECT,
     MSG_TRACE_RATING_NOT_ENABLED,
@@ -596,6 +597,64 @@ class SoundTouchClient:
         _logsi.LogVerbose(MSG_TRACE_DEVICE_COMMAND_WITH_PARM % ("addStation", addStation.ToString(), self.Device.DeviceName))
         result:SoundTouchMessage = self.Put(SoundTouchNodes.addStation, addStation)
         return result
+
+
+    def AddWirelessProfile(self, profile:WirelessProfile) -> None:
+        """
+        Adds a new wireless profile to the device network configuration.
+
+        Args:
+            profile (WirelessProfile):
+                A WirelessProfile object that contains the wireless profile details.
+
+        <details>
+          <summary>Sample Code</summary>
+        ```python
+        .. include:: ../docs/include/samplecode/SoundTouchClient/AddWirelessProfile.py
+        ```
+        </details>
+        """
+        # check if device supports this uri function; if not then we are done.
+        uriPath:str = SoundTouchNodes.addWirelessProfile.Path
+        if not uriPath in self.Device.SupportedUris:
+            raise SoundTouchError(BSTAppMessages.BST_DEVICE_NOT_CAPABLE_FUNCTION % (self.Device.DeviceName, uriPath), logsi=_logsi)
+
+        # check if device supports the `/setup` uri function; if not then we are done.
+        uriPath:str = SoundTouchNodes.setup.Path
+        if not uriPath in self.Device.SupportedUris:
+            raise SoundTouchError(BSTAppMessages.BST_DEVICE_NOT_CAPABLE_FUNCTION % (self.Device.DeviceName, uriPath), logsi=_logsi)
+
+        # validations.
+        if (not isinstance(profile, WirelessProfile)):
+            raise SoundTouchError(BSTAppMessages.ARGUMENT_TYPE_ERROR % ("profile", "WirelessProfile", type(controlType).__name__), logsi=_logsi)
+
+        # # issue a "SETUP_WIFI" command to enter wifi-setup.
+        # setupReq:SetupRequest = SetupRequest(SetupRequestStates.SETUP_WIFI)
+        # _logsi.LogVerbose(MSG_TRACE_DEVICE_COMMAND_WITH_PARM % ("setup", setupReq.State, self.Device.DeviceName))
+        # msgSetup:SoundTouchMessage = self.Put(SoundTouchNodes.setup, setupReq)
+        # _logsi.LogObject(SILevel.Verbose, MSG_TRACE_DEVICE_RESPONSE % ("setup", self.Device.DeviceName), msgSetup)
+
+        # device is capable - process the request.
+        _logsi.LogVerbose(MSG_TRACE_DEVICE_COMMAND_WITH_PARM % ("addWirelessProfile", profile.ToString(), self.Device.DeviceName))
+        msg:SoundTouchMessage = self.Put(SoundTouchNodes.addWirelessProfile, profile)
+        
+        try:
+
+            # issue a "SETUP_WIFI_LEAVE" command to exit wifi-setup.
+            # note that this will return an exception, as the device terminates the connection
+            # automatically after issuing the command.  I think it does this in order to reboot
+            # the device so it can connect to the wi-fi profile that was just added (just a guess).
+            setupReq:SetupRequest = SetupRequest(SetupRequestStates.SETUP_WIFI_LEAVE)
+            _logsi.LogVerbose(MSG_TRACE_DEVICE_COMMAND_WITH_PARM % ("setup", setupReq.State, self.Device.DeviceName))
+            msgSetup:SoundTouchMessage = self.Put(SoundTouchNodes.setup, setupReq)
+            _logsi.LogObject(SILevel.Verbose, MSG_TRACE_DEVICE_RESPONSE % ("setup", self.Device.DeviceName), msgSetup)
+
+        except:
+
+            pass # ignore exceptions.
+
+        # return addWirelessProfile message to caller.
+        return msg
 
 
     def AddZoneMembers(self, members:list[ZoneMember], delay:int=3) -> SoundTouchMessage:
@@ -2301,9 +2360,9 @@ class SoundTouchClient:
         return self.GetProperty(SoundTouchNodes.volume, Volume, refresh)
 
 
-    def GetWirelessProfile(self, refresh=True) -> WirelessProfile:
+    def GetWirelessProfile(self, refresh=True) -> WirelessProfileActive:
         """
-        Gets the current wireless profile configuration of the device.
+        Gets the currently active wireless profile configuration of the device.
 
         Args:
             refresh (bool):
@@ -2311,7 +2370,8 @@ class SoundTouchClient:
                 otherwise, False to just return the cached information.
 
         Returns:
-            A `WirelessProfile` object that contains wireless profile configuration of the device.
+            A `WirelessProfileActive` object that contains active wireless profile configuration 
+            of the device.
 
         <details>
           <summary>Sample Code</summary>
@@ -2320,8 +2380,8 @@ class SoundTouchClient:
         ```
         </details>
         """
-        _logsi.LogVerbose(MSG_TRACE_GET_CONFIG_OBJECT % ("WirelessProfile", self.Device.DeviceName))
-        return self.GetProperty(SoundTouchNodes.getActiveWirelessProfile, WirelessProfile, refresh)
+        _logsi.LogVerbose(MSG_TRACE_GET_CONFIG_OBJECT % ("WirelessProfileActive", self.Device.DeviceName))
+        return self.GetProperty(SoundTouchNodes.getActiveWirelessProfile, WirelessProfileActive, refresh)
 
 
     def GetWirelessSiteSurvey(self, refresh=True) -> PerformWirelessSiteSurveyResponse:
@@ -3154,6 +3214,14 @@ class SoundTouchClient:
             return
         url = url.lstrip()
 
+        # escape special characters in the url string if need be.
+        if (url.find("&") != -1) and (url.find("&amp") == -1):
+            url = url.replace("&", "&amp;")
+        if (url.find("<") != -1) and (url.find("&lt") == -1):
+            url = url.replace("<", "&lt;")
+        if (url.find(">") != -1) and (url.find("&gt") == -1):
+            url = url.replace(">", "&gt;")
+
         delay = self._ValidateDelay(delay, 1, 10)
         
         # only support http url's at this time (DLNA does not support https url's).
@@ -3223,7 +3291,7 @@ class SoundTouchClient:
 
                 # update source-specific nowPlaying status.
                 self.UpdateNowPlayingStatusForSource(source=nowPlaying.Source,
-                                                     sourceAccount=nowPlaying.SourceAccount,
+                                                     sourceAccount=nowPlaying.SourceAccount or "unknown",
                                                      album=album,
                                                      artist=artist,
                                                      track=track,
@@ -4629,6 +4697,29 @@ class SoundTouchClient:
         _logsi.LogVerbose(MSG_TRACE_SET_PROPERTY_VALUE_SIMPLE % ("bass level", str(level), self.Device.DeviceName))
         request:Bass = Bass(level)
         return self.Put(SoundTouchNodes.bass, request)
+
+
+    def SetLanguage(self, languageCode:LanguageCodes) -> SoundTouchMessage:
+        """
+        Sets a new language indicator.
+
+        See the `LanguageCodes` enum for valid codes.
+
+        <details>
+          <summary>Sample Code</summary>
+        ```python
+        .. include:: ../docs/include/samplecode/SoundTouchClient/SetLanguage.py
+        ```
+        </details>
+        """
+        # validations.
+        if (isinstance(languageCode, LanguageCodes)):
+            languageCode = languageCode.value
+
+        # update the device configuration.
+        request:SimpleConfig = SimpleConfig('sysLanguage', languageCode)
+        result:SoundTouchMessage = self.Put(SoundTouchNodes.language, request)
+        return result
 
 
     def SetMusicServiceAccount(self, source:str, displayName:str, userAccount:str, password:str=None

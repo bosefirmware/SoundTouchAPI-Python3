@@ -45,7 +45,7 @@ setup(
     long_description=readme('README.md'),
     
     # find and include all packages in the project (anything with an '__init__.py' file).
-    packages=find_packages(),
+    packages=find_packages(exclude=["test", "test.*"]),
     
     # place documentation folder named "docs" in the package folder.
     data_files=[
