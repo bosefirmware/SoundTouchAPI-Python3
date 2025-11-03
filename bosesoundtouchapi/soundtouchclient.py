@@ -4699,11 +4699,17 @@ class SoundTouchClient:
         return self.Put(SoundTouchNodes.bass, request)
 
 
-    def SetLanguage(self, languageCode:LanguageCodes) -> SoundTouchMessage:
+    def SetLanguage(
+        self, 
+        languageCode:LanguageCodes|str,
+        ) -> SoundTouchMessage:
         """
         Sets a new language indicator.
 
-        See the `LanguageCodes` enum for valid codes.
+        Args:
+            languageCode (str|LanguageCodes):
+                Language code to set; see the `LanguageCodes` enum for valid codes.
+            defaultValue (str|LanguageCodes):
 
         <details>
           <summary>Sample Code</summary>
@@ -4765,6 +4771,10 @@ class SoundTouchClient:
     def SetName(self, name:str) -> SoundTouchMessage:
         """
         Sets a new device name.
+
+        Args:
+            name (str):
+                Name to assign to the device.
 
         <details>
           <summary>Sample Code</summary>

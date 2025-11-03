@@ -6,6 +6,10 @@ Change are listed in reverse chronological order (newest to oldest).
 
 <span class="changelog">
 
+###### [ 1.0.84 ] - 2025/11/02
+
+  * Added `LanguageCodes.value_from_name` function to return enum value for a specified name.
+  
 ###### [ 1.0.83 ] - 2025/11/02
 
   * Added method `SoundTouchClient.AddWirelessProfile` to add a new wireless profile to the target device network configuration.

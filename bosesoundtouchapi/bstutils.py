@@ -1,5 +1,4 @@
 # external package imports.
-from datetime import datetime
 import sys
 from xml.etree.ElementTree import Element
 
