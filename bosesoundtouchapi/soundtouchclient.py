@@ -4709,7 +4709,7 @@ class SoundTouchClient:
         Args:
             languageCode (str|LanguageCodes):
                 Language code to set; see the `LanguageCodes` enum for valid codes.
-            defaultValue (str|LanguageCodes):
+                You can also use the language name (e.g. "English") or the code (e.g. 3)
 
         <details>
           <summary>Sample Code</summary>
@@ -4721,6 +4721,9 @@ class SoundTouchClient:
         # validations.
         if (isinstance(languageCode, LanguageCodes)):
             languageCode = languageCode.value
+        else:
+            # convert language name to enum value, or null if not resolved.
+            languageCode = LanguageCodes.value_from_name(str(languageCode))
 
         # update the device configuration.
         request:SimpleConfig = SimpleConfig('sysLanguage', languageCode)
