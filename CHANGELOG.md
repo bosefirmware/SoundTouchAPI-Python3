@@ -6,6 +6,10 @@ Change are listed in reverse chronological order (newest to oldest).
 
 <span class="changelog">
 
+###### [ 1.0.86 ] - 2025/11/03
+
+  * Added method `SoundTouchClient.SetProductHdmiAssignmentControls` to set the current product HDMI assignment controls configuration of the device.
+  
 ###### [ 1.0.85 ] - 2025/11/02
 
   * Updated `LanguageCodes.value_from_name` function to accept language name (e.g. "English") or code (e.g. 3) as input values.

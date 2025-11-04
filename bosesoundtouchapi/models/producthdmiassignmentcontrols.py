@@ -4,9 +4,11 @@ from xml.etree.ElementTree import Element
 
 # our package imports.
 from ..bstutils import export
+from ..soundtouchmodelrequest import SoundTouchModelRequest
+from .hdmiinputselectiontypes import HdmiInputSelectionTypes
 
 @export
-class ProductHdmiAssignmentControls:
+class ProductHdmiAssignmentControls(SoundTouchModelRequest):
     """
     SoundTouch device ProductHdmiAssignmentControls configuration object.
        
@@ -45,8 +47,24 @@ class ProductHdmiAssignmentControls:
 
     @property
     def HdmiInputSelection01(self) -> str:
-        """ The HDMI input selection 1 value. """
+        """ 
+        The HDMI input selection 1 value. 
+
+        See `HdmiInputSelectionTypes` for more information.
+        """
         return self._HdmiInputSelection01
+
+
+    @HdmiInputSelection01.setter
+    def HdmiInputSelection01(self, value:str):
+        """ 
+        Sets the HdmiInputSelection01 property value.
+        """
+        if value != None:
+            if isinstance(value, HdmiInputSelectionTypes):
+                self._HdmiInputSelection01 = value.value
+            elif isinstance(value, str):
+                self._HdmiInputSelection01 = value
 
 
     def ToDictionary(self) -> dict:
@@ -60,6 +78,25 @@ class ProductHdmiAssignmentControls:
         return result
         
 
+    def ToElement(self, isRequestBody:bool=False) -> Element:
+        """ 
+        Overridden.  
+        Returns an xmltree Element node representation of the class. 
+
+        Args:
+            isRequestBody (bool):
+                True if the element should only return attributes needed for a POST
+                request body; otherwise, False to return all attributes.
+        """
+        elm = Element('producthdmiassignmentcontrols')
+        
+        if self._HdmiInputSelection01 is not None and len(self._HdmiInputSelection01) > 0: elm.set('hdmiinputselection_01', self._HdmiInputSelection01)
+        if isRequestBody == True:
+            return elm
+
+        return elm
+
+        
     def ToString(self) -> str:
         """
         Returns a displayable string representation of the class.

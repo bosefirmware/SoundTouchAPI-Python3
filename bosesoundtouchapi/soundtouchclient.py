@@ -4799,11 +4799,11 @@ class SoundTouchClient:
 
     def SetProductCecHdmiControl(self, control:ProductCecHdmiControl) -> SoundTouchMessage:
         """
-        Sets the current product cec hdmi control configuration of the device.
+        Sets the current product CEC HDMI control configuration of the device.
 
         Args:
             control (ProductCecHdmiControl):
-                A `ProductCecHdmiControl` object that contains product cec hdmi control
+                A `ProductCecHdmiControl` object that contains product CEC HDMI control
                 values to set.
 
         Raises:
@@ -4829,14 +4829,68 @@ class SoundTouchClient:
             raise SoundTouchError('control argument was not supplied, or is not of type ProductCecHdmiControl', logsi=_logsi)
             
         # check if device supports this uri function; if not then we are done.
-        uriPath:str = SoundTouchNodes.productcechdmicontrol.Path
-        if not uriPath in self.Device.SupportedUris:
-            raise SoundTouchError(BSTAppMessages.BST_DEVICE_NOT_CAPABLE_FUNCTION % (self.Device.DeviceName, uriPath), logsi=_logsi)
+        uri = SoundTouchNodes.productcechdmicontrol
+        if not uri.Path in self.Device.SupportedUris:
+            raise SoundTouchError(BSTAppMessages.BST_DEVICE_NOT_CAPABLE_FUNCTION % (self.Device.DeviceName, uri.Path), logsi=_logsi)
 
         # device is capable - process the request.
         _logsi.LogVerbose(MSG_TRACE_SET_PROPERTY_VALUE_SIMPLE % ("product cec hdmi control", control.ToString(), self.Device.DeviceName))
         request:ProductCecHdmiControl = control
-        return self.Put(SoundTouchNodes.productcechdmicontrol, request)
+        msg:SoundTouchMessage = self.Put(uri, request)
+
+        # update configuration cache with the updated configuration.
+        if msg.Response is not None:
+            self[uri] = ProductCecHdmiControl(root=msg.Response)
+
+        return msg
+
+
+    def SetProductHdmiAssignmentControls(self, controls:ProductHdmiAssignmentControls) -> SoundTouchMessage:
+        """
+        Sets the current product HDMI assignment controls configuration of the device.
+
+        Args:
+            control (ProductHdmiAssignmentControls):
+                A `HdmiInputSelectionTypes` object that contains product hdmi assignment controls
+                value to set.
+
+        Raises:
+            SoundTouchError:
+                If the device is not capable of supporting `productcechdmicontrol` functions,
+                as determined by a query to the cached `supportedURLs` web-services api.    
+                If the control argument is None, or not of type `ProductCecHdmiControl`.
+                
+        Note that some SoundTouch devices do not support this functionality.  For example,
+        the ST-300 will support this, but the ST-10 will not.  This method will first query
+        the device supportedUris to determine if it supports the function; if so, then the
+        request is made to the device; if not, then a `SoundTouchError` is raised.
+        
+        <details>
+          <summary>Sample Code</summary>
+        ```python
+        .. include:: ../docs/include/samplecode/SoundTouchClient/SetProductHdmiAssignmentControls.py
+        ```
+        </details>
+        """
+        # validations.
+        if (controls is None) or (not isinstance(controls, ProductHdmiAssignmentControls)):
+            raise SoundTouchError('control argument was not supplied, or is not of type ProductHdmiAssignmentControls', logsi=_logsi)
+            
+        # check if device supports this uri function; if not then we are done.
+        uri = SoundTouchNodes.producthdmiassignmentcontrols
+        if not uri.Path in self.Device.SupportedUris:
+            raise SoundTouchError(BSTAppMessages.BST_DEVICE_NOT_CAPABLE_FUNCTION % (self.Device.DeviceName, uri.Path), logsi=_logsi)
+
+        # device is capable - process the request.
+        _logsi.LogVerbose(MSG_TRACE_SET_PROPERTY_VALUE_SIMPLE % ("product hdmi assignment controls", controls.ToString(), self.Device.DeviceName))
+        request:ProductHdmiAssignmentControls = controls
+        msg:SoundTouchMessage = self.Put(uri, request)
+          
+        # update configuration cache with the updated configuration.
+        if msg.Response is not None:
+            self[uri] = ProductHdmiAssignmentControls(root=msg.Response)
+
+        return msg
 
 
     def SetUserPlayControl(self, userPlayControlType:UserPlayControlTypes) -> SoundTouchMessage:

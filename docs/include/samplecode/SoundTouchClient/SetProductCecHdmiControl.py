@@ -15,7 +15,7 @@ try:
     cfgBefore = client.GetProductCecHdmiControl()
     print("\nCurrent product cec hdmi control value: \n%s" % cfgBefore.ToString())
         
-    # create new tone controls object.
+    # create new product cec hdmi control object.
     cfgUpdate:ProductCecHdmiControl = ProductCecHdmiControl()
 
     # for testing purposes, toggle the value from OFF to ON or vice versa.

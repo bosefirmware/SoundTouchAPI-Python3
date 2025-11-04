@@ -17,6 +17,7 @@ from .controllevelinfo import ControlLevelInfo
 from .dspmonostereoitem import DSPMonoStereoItem
 from .group import Group, GroupStatusTypes
 from .grouprole import GroupRole, GroupRoleTypes
+from .hdmiinputselectiontypes import HdmiInputSelectionTypes
 from .info import Information, InformationNetworkInfo
 from .introspect import Introspect
 from .keystates import KeyStates
@@ -87,6 +88,7 @@ __all__ = [
     'DSPMonoStereoItem',
     'Group', 'GroupStatusTypes',
     'GroupRole', 'GroupRoleTypes',
+    'HdmiInputSelectionTypes',
     'Information', 'InformationNetworkInfo',
     'Introspect',
     'KeyStates',
